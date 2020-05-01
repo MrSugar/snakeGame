@@ -1,7 +1,4 @@
 function findDir(prev, next) {
-  if (prev === undefined) {
-    prev = next;
-  }
   if (prev == diractions.up && next == diractions.up) {
     return diractions.up;
   }
