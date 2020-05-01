@@ -16,7 +16,6 @@ let speed;
 let food;
 let snake = []; // [ {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№} ]
 let dir;
-let prevDir;
 
 let diractions = {
   up: 0,
@@ -35,8 +34,7 @@ let diractions = {
 
 function initialization() {
   snake = [];
-  dir = "up";
-  prevDir = "up";
+  dir = diractions.up;
   score = 0;
   speed = 0;
   food = { x: 0, y: 0 };
@@ -44,17 +42,7 @@ function initialization() {
   snake[0] = {
     x: 9,
     y: 10,
-    dir: 0,
-  };
-  snake[1] = {
-    x: 9,
-    y: 11,
-    dir: 0,
-  };
-  snake[2] = {
-    x: 9,
-    y: 12,
-    dir: 0,
+    dir: dir,
   };
   setRandomPosition(food);
 

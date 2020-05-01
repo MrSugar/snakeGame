@@ -60,19 +60,19 @@ function drawSnake() {
     //рисуем голову змеи
     if (i == 0) {
       if (
-        [diractions.left, diractions.leftUp, diractions.leftDown].includes(
+        [diractions.left, diractions.upLeft, diractions.downLeft].includes(
           snake[i].dir
         )
       ) {
         drawHeadLeft(snake[i].x, snake[i].y);
       } else if (
-        [diractions.right, diractions.rightDown, diractions.rightUp].includes(
+        [diractions.right, diractions.downRight, diractions.upRight].includes(
           snake[i].dir
         )
       ) {
         drawHeadRight(snake[i].x, snake[i].y);
       } else if (
-        [diractions.downLeft, diractions.downRight, diractions.down].includes(
+        [diractions.down, diractions.leftDown, diractions.rightDown].includes(
           snake[i].dir
         )
       ) {
@@ -85,19 +85,19 @@ function drawSnake() {
 
       if (i == snake.length - 1) {
         if (
-          [diractions.left, diractions.leftUp, diractions.leftDown].includes(
+          [diractions.left, diractions.upLeft, diractions.downLeft].includes(
             snake[i].dir
           )
         ) {
           drawTailLeft(snake[i].x, snake[i].y);
         } else if (
-          [diractions.right, diractions.rightDown, diractions.rightUp].includes(
+          [diractions.right, diractions.upRight, diractions.downRight].includes(
             snake[i].dir
           )
         ) {
           drawTailRight(snake[i].x, snake[i].y);
         } else if (
-          [diractions.downLeft, diractions.downRight, diractions.down].includes(
+          [diractions.down, diractions.leftDown, diractions.rightDown].includes(
             snake[i].dir
           )
         ) {

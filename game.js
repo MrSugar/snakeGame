@@ -24,12 +24,16 @@ function gameLoop() {
 
   const newHead = { ...headSnake };
   // двигаем голову змеи
-  if (dir == "left") newHead.x--;
-  if (dir == "right") newHead.x++;
-  if (dir == "up") newHead.y--;
-  if (dir == "down") newHead.y++;
-  newHead.dir = findDir(prevDir, dir);
-  prevDir = dir;
+  if (dir == diractions.left) newHead.x--;
+  if (dir == diractions.right) newHead.x++;
+  if (dir == diractions.up) newHead.y--;
+  if (dir == diractions.down) newHead.y++;
+  newHead.dir = dir;
+  
+  if(headSnake.dir !== newHead.dir) {
+    headSnake.dir = findDir(headSnake.dir, newHead.dir);
+  }
+
   // добавляет один или более элементов в начало массива и возвращает новую длину массива.
   snake.unshift(newHead);
 }
