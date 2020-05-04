@@ -38,8 +38,8 @@ function findDir(prev, next) {
 }
 
 function setRandomPosition(point) {
-  point.x = Math.floor(Math.random() * 17 + 1);
-  point.y = Math.floor(Math.random() * 15 + 3);
+  point.x = Math.floor(1 + Math.random() * (sizeTable - 1));
+  point.y = Math.floor(1 + Math.random() * (sizeTable - 1));
 }
 
 document.addEventListener("keydown", direction);
@@ -56,12 +56,18 @@ function direction(event) {
   }
 }
 
-function checkEndOfGame(headSnake) {
-  //край карты
-  const checkBorder =
-    headSnake.x < 1 || headSnake.x > 17 || headSnake.y < 3 || headSnake.y > 17;
+function cellIsBlock() {
+  let headOfSnake = snake[0];
+  const i = headOfSnake.y * sizeTable + headOfSnake.x;
+  if (table[i] == cellTypes.block) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
-  return checkBorder || checkEatMyself();
+function checkEndOfGame(headSnake) {
+  return cellIsBlock() || checkEatMyself();
 }
 
 function checkEatMyself() {

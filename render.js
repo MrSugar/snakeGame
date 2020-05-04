@@ -49,6 +49,16 @@ function drawTailLeft(x, y) {
   ctx.drawImage(snakeSpriteSheet, 84, 126, 42, 42, x * box, y * box, box, box);
 }
 
+function drawCell(_x, _y) {
+  ctx.drawImage(cellTexture, 0, 86, 172, 172, _x * box, _y * box, box, box);
+}
+
+function drawBlock(_x, _y) {
+  // console.log(_x, _y);
+  ctx.fillStyle = "green";
+  ctx.fillRect(_x * box, _y * box, box, box);
+}
+
 function drawSnake() {
   //создаем счетчик выставляем значение 0
   let i = 0;
@@ -159,9 +169,21 @@ function drawSnake() {
   }
 }
 
+function drawTable() {
+  for (let i = 0; i < table.length; i++) {
+    const y = Math.floor(i / sizeTable);
+    const x = i % sizeTable;
+
+    if (table[i] == cellTypes.empty) {
+      drawCell(x, y);
+    } else {
+      drawBlock(x, y);
+    }
+  }
+}
+
 function drawGame() {
-  //рисуем фон
-  ctx.drawImage(ground, 0, 0);
+  drawTable();
   //рисуем яблоко
   ctx.drawImage(foodImg, food.x * box, food.y * box);
 

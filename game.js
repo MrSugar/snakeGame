@@ -29,8 +29,8 @@ function gameLoop() {
   if (dir == diractions.up) newHead.y--;
   if (dir == diractions.down) newHead.y++;
   newHead.dir = dir;
-  
-  if(headSnake.dir !== newHead.dir) {
+
+  if (headSnake.dir !== newHead.dir) {
     headSnake.dir = findDir(headSnake.dir, newHead.dir);
   }
 
