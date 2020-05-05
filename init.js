@@ -10,18 +10,26 @@ cellTexture.src = "img/floor.jpg";
 const foodImg = new Image();
 foodImg.src = "img/food.png";
 
+const pearImg = new Image();
+pearImg.src = "img/pear.png";
+
 const snakeSpriteSheet = new Image();
 snakeSpriteSheet.src = "img/Snake-sprite-sheet.png";
 
 let box = 32;
 let score;
 let speed;
-let food;
 let snake = []; // [ {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№} ]
 let dir;
-
+const sizeTable = 26;
+let blockCount = Math.ceil(sizeTable / 4);
+let pear = {
+  cell: null,
+  timeoutId: null,
+  expiredTime: 0,
+  lifeTimeInMS: (sizeTable / 2) * 1000,
+};
 const table = [];
-const sizeTable = 20;
 
 let diractions = {
   up: 0,
@@ -41,6 +49,9 @@ let diractions = {
 let cellTypes = {
   empty: 0,
   block: 1,
+  apple: 3,
+  pear: 2,
+  border: 4,
 };
 
 function initialization() {
@@ -48,7 +59,6 @@ function initialization() {
   dir = diractions.up;
   score = 0;
   speed = 0;
-  food = { x: 0, y: 0 };
 
   canvas.width = sizeTable * box;
   canvas.height = sizeTable * box;
@@ -59,24 +69,23 @@ function initialization() {
     const isBorder = x < 1 || y < 1 || y >= sizeTable - 1 || x >= sizeTable - 1;
 
     if (isBorder) {
-      table[i] = cellTypes.block;
+      table[i] = cellTypes.border;
     } else {
       table[i] = cellTypes.empty;
     }
   }
-  // случайное целое число от 1 до sizetable -2
-  const randomX = 1 + Math.floor(Math.random() * (sizeTable - 2));
-  const randomY = 1 + Math.floor(Math.random() * (sizeTable - 2));
-  const i = randomY * sizeTable + randomX;
-  table[i] = cellTypes.block;
 
-  console.log(table);
+  for (let i = 0; i < blockCount; i++) {
+    createRandomCell(cellTypes.block);
+  }
+
+  createRandomCell(cellTypes.apple);
+
   snake[0] = {
     x: Math.floor(sizeTable / 2),
     y: Math.floor(sizeTable / 2),
     dir: dir,
   };
-  setRandomPosition(food);
 
   nextTick();
 }

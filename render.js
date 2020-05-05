@@ -53,6 +53,14 @@ function drawCell(_x, _y) {
   ctx.drawImage(cellTexture, 0, 86, 172, 172, _x * box, _y * box, box, box);
 }
 
+function drawApple(_x, _y) {
+  ctx.drawImage(foodImg, _x * box, _y * box);
+}
+
+function drawPear(_x, _y) {
+  ctx.drawImage(pearImg, _x * box, _y * box);
+}
+
 function drawBlock(_x, _y) {
   // console.log(_x, _y);
   ctx.fillStyle = "green";
@@ -61,31 +69,16 @@ function drawBlock(_x, _y) {
 
 function drawSnake() {
   //создаем счетчик выставляем значение 0
-  let i = 0;
+  let i = snake.length - 1;
   // начало цикла , проверяем значение счетчика
-  console.log(snake);
-  while (i < snake.length) {
-    console.log(i, snake[i].dir);
-
+  while (i >= 0) {
     //рисуем голову змеи
     if (i == 0) {
-      if (
-        [diractions.left, diractions.upLeft, diractions.downLeft].includes(
-          snake[i].dir
-        )
-      ) {
+      if ([diractions.left, diractions.upLeft, diractions.downLeft].includes(snake[i].dir)) {
         drawHeadLeft(snake[i].x, snake[i].y);
-      } else if (
-        [diractions.right, diractions.downRight, diractions.upRight].includes(
-          snake[i].dir
-        )
-      ) {
+      } else if ([diractions.right, diractions.downRight, diractions.upRight].includes(snake[i].dir)) {
         drawHeadRight(snake[i].x, snake[i].y);
-      } else if (
-        [diractions.down, diractions.leftDown, diractions.rightDown].includes(
-          snake[i].dir
-        )
-      ) {
+      } else if ([diractions.down, diractions.leftDown, diractions.rightDown].includes(snake[i].dir)) {
         drawHeadDown(snake[i].x, snake[i].y);
       } else {
         drawHeadUp(snake[i].x, snake[i].y);
@@ -94,23 +87,11 @@ function drawSnake() {
       //рисуем хвост змеи
 
       if (i == snake.length - 1) {
-        if (
-          [diractions.left, diractions.upLeft, diractions.downLeft].includes(
-            snake[i].dir
-          )
-        ) {
+        if ([diractions.left, diractions.upLeft, diractions.downLeft].includes(snake[i].dir)) {
           drawTailLeft(snake[i].x, snake[i].y);
-        } else if (
-          [diractions.right, diractions.upRight, diractions.downRight].includes(
-            snake[i].dir
-          )
-        ) {
+        } else if ([diractions.right, diractions.upRight, diractions.downRight].includes(snake[i].dir)) {
           drawTailRight(snake[i].x, snake[i].y);
-        } else if (
-          [diractions.down, diractions.leftDown, diractions.rightDown].includes(
-            snake[i].dir
-          )
-        ) {
+        } else if ([diractions.down, diractions.leftDown, diractions.rightDown].includes(snake[i].dir)) {
           drawTailDown(snake[i].x, snake[i].y);
         } else {
           drawTailUp(snake[i].x, snake[i].y);
@@ -165,38 +146,53 @@ function drawSnake() {
       }
     }
 
-    i++;
+    i--;
   }
 }
 
 function drawTable() {
   for (let i = 0; i < table.length; i++) {
-    const y = Math.floor(i / sizeTable);
-    const x = i % sizeTable;
+    const { x, y } = indexToXY(i);
 
     if (table[i] == cellTypes.empty) {
       drawCell(x, y);
+    } else if (table[i] == cellTypes.apple) {
+      drawApple(x, y);
+    } else if (table[i] == cellTypes.pear) {
+      drawPear(x, y);
+    } else if (table[i] == cellTypes.border) {
+      drawBlock(x, y);
     } else {
       drawBlock(x, y);
     }
   }
 }
 
+function drawText(text = "", _x = 0, _y = 0, color = "black", fontSize = 14, fontStyle = "Gabriola") {
+  //выбор цвета
+  ctx.fillStyle = color;
+  //выбор шрифта счетчика и размера
+  ctx.font = `${fontSize}px ${fontStyle}`;
+  //пишем строчку score  в координатах box
+  ctx.fillText(text, _x * box, _y * box);
+}
+
 function drawGame() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawTable();
-  //рисуем яблоко
-  ctx.drawImage(foodImg, food.x * box, food.y * box);
 
   drawSnake();
 
-  //выбор цвета
-  ctx.fillStyle = "blue";
-  //выбор шрифта счетчика и размера
-  ctx.font = "50px Arial";
-  //пишем строчку score  в координатах box
-  ctx.fillText("score: " + score, box * 2.5, box * 1.7);
-
-  ctx.fillStyle = "yellow";
-  ctx.font = "28px Gabriola";
-  ctx.fillText("speed: " + speed, box * 13, box * 1.7);
+  drawText(`score: ${score}`, 0, 1, "blue", 30);
+  drawText(`speed: ${speed}`, 13, 1, "yellow", 30);
+  if (pear.cell !== null) {
+    drawText(
+      Math.ceil((pear.expiredTime - Date.now()) / 1000),
+      pear.cell.x + 0.4,
+      pear.cell.y + 0.8,
+      "black",
+      22,
+      "Gabriola bold"
+    );
+  }
 }

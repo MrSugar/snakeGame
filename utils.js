@@ -87,3 +87,44 @@ function checkEatMyself() {
   console.log("isEat", isEat);
   return isEat;
 }
+
+function XYtoIndex(_x, _y) {
+  return _y * sizeTable + _x;
+}
+
+function indexToXY(index) {
+  return {
+    y: Math.floor(index / sizeTable),
+    x: index % sizeTable,
+  };
+}
+
+function checkPointInSnake(_x, _y) {
+  for (let i = 0; i < snake.length; i++) {
+    if (snake[i].x == _x && snake[i].y == _y) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function createRandomCell(type) {
+  let randomX = 1 + Math.floor(Math.random() * (sizeTable - 2));
+  let randomY = 1 + Math.floor(Math.random() * (sizeTable - 2));
+
+  while (table[XYtoIndex(randomX, randomY)] != cellTypes.empty && checkPointInSnake(randomX, randomY)) {
+    randomX = 1 + Math.floor(Math.random() * (sizeTable - 2));
+    randomY = 1 + Math.floor(Math.random() * (sizeTable - 2));
+  }
+
+  table[XYtoIndex(randomX, randomY)] = type;
+  return { x: randomX, y: randomY };
+}
+
+function clearPear() {
+  if (pear.cell !== null) {
+    table[XYtoIndex(pear.cell.x, pear.cell.y)] = cellTypes.empty;
+  }
+  clearTimeout(pear.timeoutId);
+  pear.cell = null;
+}
