@@ -3,7 +3,7 @@ const backgroundCtx = backgroundCanvas.getContext("2d");
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-
+let drewBG;
 const ground = new Image();
 ground.src = "img/img.png";
 
@@ -23,7 +23,7 @@ const snakeSpriteSheet = new Image();
 snakeSpriteSheet.src = "img/snake_sprite.gif";
 
 let box = 32;
-let withBorder = false;
+let withBorder = true;
 let score;
 let speed;
 let snake = []; // [ {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№} ]
@@ -66,7 +66,7 @@ function initialization() {
   dir = diractions.up;
   score = 0;
   speed = 0;
-
+  drewBG = false;
   backgroundCanvas.width = sizeTable * box;
   backgroundCanvas.height = sizeTable * box;
 
@@ -96,6 +96,6 @@ function initialization() {
     y: Math.floor(sizeTable / 2),
     dir: dir,
   };
-  //drawTable(backgroundCtx, false);
+
   nextTick();
 }

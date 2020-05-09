@@ -7,8 +7,21 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <canvas id="background"></canvas>
-    <canvas id="game"></canvas>
+    <div style="position: relative;">
+      <canvas id="background" style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+      <canvas
+        id="game"
+        style="
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 1;
+          background: transparent;
+          background-color: transparent;
+          background-image: none;
+        "
+      ></canvas>
+    </div>
     <script src="utils.js"></script>
     <script src="init.js"></script>
     <script src="render.js"></script>

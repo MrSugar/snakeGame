@@ -64,8 +64,6 @@ function drawPear(_x, _y, _ctx) {
 }
 
 function drawBlock(_x, _y, type, _ctx) {
-  // console.log(_x, _y, _ctx);
-
   if (type == cellTypes.block) {
     _ctx.drawImage(cellTexture, 64, 64, 64, 64, _x * box, _y * box, box, box);
   } else if (type == cellTypes.border && withBorder) {
@@ -178,18 +176,18 @@ function drawSnake(_ctx) {
 
 function drawTable(_ctx, dynamic) {
   for (let i = 0; i < table.length; i++) {
-    const { _x, _y } = indexToXY(i);
+    const { x: _x, y: _y } = indexToXY(i);
 
-    if (table[i] == cellTypes.empty) {
-      drawCell(_x, _y, _ctx);
-    } else if (table[i] == cellTypes.apple && dynamic) {
+    if (table[i] == cellTypes.apple && dynamic === true) {
       drawApple(_x, _y, _ctx);
-    } else if (table[i] == cellTypes.pear && dynamic) {
+    } else if (table[i] == cellTypes.pear && dynamic === true) {
       drawPear(_x, _y, _ctx);
-    } else if (table[i] == cellTypes.border) {
+    } else if (table[i] == cellTypes.border && dynamic === false) {
       drawBlock(_x, _y, table[i], _ctx);
-    } else if (dynamic) {
+    } else if (table[i] == cellTypes.block && dynamic === false) {
       drawBlock(_x, _y, table[i], _ctx);
+    } else if (dynamic === false) {
+      drawCell(_x, _y, _ctx);
     }
   }
 }
@@ -206,6 +204,10 @@ function drawText(_ctx, text = "", _x = 0, _y = 0, color = "black", fontSize = 1
 function drawGame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawTable(ctx, true);
+  if (!drewBG) {
+    drawTable(backgroundCtx, false);
+    drewBG = true;
+  }
   drawSnake(ctx);
 
   drawText(ctx, `score: ${score}`, 0, 1, "blue", 30);

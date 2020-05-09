@@ -37,11 +37,6 @@ function findDir(prev, next) {
   }
 }
 
-function setRandomPosition(point) {
-  point.x = Math.floor(1 + Math.random() * (sizeTable - 1));
-  point.y = Math.floor(1 + Math.random() * (sizeTable - 1));
-}
-
 document.addEventListener("keydown", direction);
 //проверка клавиш
 function direction(event) {
@@ -56,23 +51,25 @@ function direction(event) {
   }
 }
 
-function cellIsBlock() {
-  let headOfSnake = snake[0];
+function cellIs(headOfSnake, type) {
   const i = headOfSnake.y * sizeTable + headOfSnake.x;
-  if (table[i] == cellTypes.block) {
+  if (table[i] == type) {
     return true;
   } else {
     return false;
   }
 }
 
-function checkEndOfGame(headSnake) {
-  return cellIsBlock() || checkEatMyself();
+function checkEndOfGame(headOfSnake) {
+  return (
+    (withBorder && cellIs(headOfSnake, cellTypes.border)) ||
+    cellIs(headOfSnake, cellTypes.block) ||
+    checkEatMyself(headOfSnake)
+  );
 }
 
-function checkEatMyself() {
+function checkEatMyself(headOfSnake) {
   let isEat = false;
-  let headOfSnake = snake[0];
   let i = 1;
   //начало цикла , проверяем значение счетчика
   while (i < snake.length && isEat != true) {

@@ -1,12 +1,13 @@
 function gameLoop() {
-  if (checkEndOfGame(snake[0])) {
+  let headSnake = snake[0];
+  console.log("gameLoop -> headSnake", headSnake);
+  if (checkEndOfGame(headSnake)) {
     clearTimeout(gameId);
     if (confirm("Go next?")) {
       initialization();
     }
+    return;
   }
-
-  let headSnake = snake[0];
   // если голова змеи находится на клетке с едой
 
   let isEatingFood = table[XYtoIndex(headSnake.x, headSnake.y)] == cellTypes.apple;
@@ -48,7 +49,7 @@ function gameLoop() {
   newHead.dir = dir;
 
   let isBorder = table[XYtoIndex(newHead.x, newHead.y)] == cellTypes.border;
-  if (isBorder) {
+  if (!withBorder && isBorder) {
     if (dir == diractions.left) newHead.x = sizeTable - 2;
     if (dir == diractions.right) newHead.x = 1;
     if (dir == diractions.up) newHead.y = sizeTable - 2;
@@ -57,7 +58,6 @@ function gameLoop() {
   if (headSnake.dir !== newHead.dir) {
     headSnake.dir = findDir(headSnake.dir, newHead.dir);
   }
-
   // добавляет один или более элементов в начало массива и возвращает новую длину массива.
   snake.unshift(newHead);
 }
