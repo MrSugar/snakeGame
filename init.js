@@ -1,3 +1,6 @@
+const backgroundCanvas = document.getElementById("background");
+const backgroundCtx = backgroundCanvas.getContext("2d");
+
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
@@ -5,18 +8,22 @@ const ground = new Image();
 ground.src = "img/img.png";
 
 const cellTexture = new Image();
-cellTexture.src = "img/floor.jpg";
+cellTexture.src = "img/borders_and_food_sprite.gif";
 
 const foodImg = new Image();
 foodImg.src = "img/food.png";
+
+const mapSprite = new Image();
+mapSprite.src = "img/tiled_grass_sprite.gif";
 
 const pearImg = new Image();
 pearImg.src = "img/pear.png";
 
 const snakeSpriteSheet = new Image();
-snakeSpriteSheet.src = "img/Snake-sprite-sheet.png";
+snakeSpriteSheet.src = "img/snake_sprite.gif";
 
 let box = 32;
+let withBorder = false;
 let score;
 let speed;
 let snake = []; // [ {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№, dir: ""}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№}, {x:№, y:№} ]
@@ -60,6 +67,9 @@ function initialization() {
   score = 0;
   speed = 0;
 
+  backgroundCanvas.width = sizeTable * box;
+  backgroundCanvas.height = sizeTable * box;
+
   canvas.width = sizeTable * box;
   canvas.height = sizeTable * box;
 
@@ -86,6 +96,6 @@ function initialization() {
     y: Math.floor(sizeTable / 2),
     dir: dir,
   };
-
+  //drawTable(backgroundCtx, false);
   nextTick();
 }
